@@ -1,6 +1,26 @@
 import time
 import can
 from threading import Event
+from enum import Enum
+
+#Can type CAN 2.0 and CAN FD
+class CAN_TYPE(Enum):
+    CAN_2_0_MAX_PAYLOAD = 8  # CAN 2.0
+    CAN_FD_MAX_PAYLOAD = 64  #CAN FD
+
+# PCI types
+class PCI_types(Enum):
+    PCI_SF = 0x00  # Single Frame
+    PCI_FF = 0x01  # First Frame
+    PCI_CF = 0x02  # Consecutive Frame
+    PCI_FC = 0x03  # Flow Control
+
+class FS_types(Enum):
+    FC_ERROR        = 0x00
+    FC_OVERFLOW     = 0x01
+    FC_WAIT         = 0x02
+    FC_CONTINOUS    = 0x03
+
 
 class CANTP(can.Listener):
     def __init__(self, bus, txid, rxid):
