@@ -11,12 +11,21 @@ bus = can.interface.Bus(interface='neovi', channel=1, bitrate=1000000, receive_o
 tp = CANTP(bus, txid=0x123, rxid=0x123)
 # tp = CANTP(bus)
 
-# Start the notifier
+
 notifier = can.Notifier(bus, [tp])
 
-# Data to send
-data = "Hello from the transmitter on ValueCAN!"
+while 1:
+        # Start the notifier
+    
+    # Data to send
+    # data = "Hello from the transmitter on ValueCAN!"
+    # data ="hello"
+    print("Nhap data = ")
+    data = input()
 
-# Send data
-tp.sendData(data)
-time.sleep(2)  # Allow time to transmit
+    # Send data
+    tp.sendData(data)
+    time.sleep(2)  # Allow time to transmit
+
+
+

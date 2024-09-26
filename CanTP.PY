@@ -54,7 +54,8 @@ class CANTP(can.Listener):
         data_len = len(data)
 
         while data_len:
-            if not self.flow_ctrl_ok.wait(1):
+            # if not self.flow_ctrl_ok.wait(1):
+            if not self.flow_ctrl_ok.wait(3):
                 print("Flow Control timeout")
                 break
 
@@ -106,7 +107,7 @@ class CANTP(can.Listener):
                 self.writeFlowControlFrame()
                 return
 
-            if data[0] & 0xF0 == 0x20:
+            if data[0] & 0xF0 == 0x20:  # after received block of consecutive frame
                 self.rx_data += data[1:8]
                 self.received_blocks += 1
 
