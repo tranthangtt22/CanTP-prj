@@ -1,13 +1,22 @@
+# transmitter.py
 import can
+import time
 from cantp import CANTP
 
+# Set up the ValueCAN interface
+# bus = can.interface.Bus(interface='neovi', channel=1, bitrate=1000000)
+bus = can.interface.Bus(interface='neovi', channel=1, bitrate=1000000, receive_own_messages=False)
 
-# Tạo bus chung với chế độ loopback
-bus = can.Bus('test', interface='virtual', receive_own_messages=True)
+# tp = CANTP(bus, txid=0x727, rxid=0x72F)
+tp = CANTP(bus, txid=0x123, rxid=0x123)
+# tp = CANTP(bus)
 
-# Khởi tạo đối tượng truyền
-transmitter = CANTP(bus, 0x727, 0x72F)
-can.Notifier(bus, [transmitter])
+# Start the notifier
+notifier = can.Notifier(bus, [tp])
 
-def send_data(data):
-    transmitter.sendData(data)
+# Data to send
+data = "Hello from the transmitter on ValueCAN!"
+
+# Send data
+tp.sendData(data)
+time.sleep(2)  # Allow time to transmit

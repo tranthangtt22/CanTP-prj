@@ -1,9 +1,34 @@
+# receiver.py
 import can
+import time
 from cantp import CANTP
 
-# Tạo bus chung với chế độ loopback
-bus = can.Bus('test', interface='virtual', receive_own_messages=True)
+# Set up the ValueCAN interface
+bus = can.interface.Bus(interface='neovi', channel=1, bitrate=1000000, receive_own_messages=False)
+# bus = can.interface.Bus(interface='neovi', channel=1, bitrate=1000000)
 
-# Khởi tạo đối tượng nhận
-receiver = CANTP(bus, 0x72F, 0x727)
-can.Notifier(bus, [receiver])
+# tp = CANTP(bus, txid=0x72F, rxid=0x727)
+tp = CANTP(bus, txid=0x123, rxid=0x123)
+# tp = CANTP(bus)
+
+# Start the notifier
+# notifier = can.Notifier(bus, [tp])
+
+# # Keep the script running to allow data reception
+# try:
+#     while not tp.data_complete:
+#         time.sleep(1)
+# except KeyboardInterrupt:
+#     print("Receiver stopped.")
+
+while 1:
+    
+    # Start the notifier
+    notifier = can.Notifier(bus, [tp])
+
+# Keep the script running to allow data reception
+    try:
+        while not tp.data_complete:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Receiver stopped.")
