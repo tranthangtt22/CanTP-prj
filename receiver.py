@@ -4,21 +4,17 @@ import time
 from cantp import CANTP
 
 # Set up the ValueCAN interface
-bus = can.interface.Bus(interface='neovi', channel=1, bitrate=1000000, receive_own_messages=False)
-# bus = can.interface.Bus(interface='neovi', channel=1, bitrate=1000000)
+bus = can.interface.Bus(interface='neovi', channel=1, bitrate=1000000)
 
 # tp = CANTP(bus, txid=0x72F, rxid=0x727)
 tp = CANTP(bus, txid=0x123, rxid=0x123)
 
-    
-    # Start the notifier
+# Start the notifier
 notifier = can.Notifier(bus, [tp])
 
-while 1:
 # Keep the script running to allow data reception
-    try:
-        while not tp.data_complete:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("Receiver stopped.")
-        break
+try:
+    while not tp.data_complete:
+        time.sleep(1)
+except KeyboardInterrupt:
+    print("Receiver stopped.")
